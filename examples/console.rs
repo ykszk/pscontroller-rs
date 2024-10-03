@@ -60,7 +60,7 @@ fn main() {
 			count = 0;
 			failure = 0;
 		}
-		println!("");
+		println!();
 		print!("Rate: ({}) - ", rate);
 
 		// Print the three byte header and X * 16bit message

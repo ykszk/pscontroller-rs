@@ -106,7 +106,7 @@ fn main() {
                     print!("{:02x} ", item);
                 }
 
-                println!("");
+                println!();
             }
         }
 

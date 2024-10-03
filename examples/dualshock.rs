@@ -33,18 +33,14 @@ fn build_spi() -> io::Result<Spidev> {
 }
 
 fn set_motors(buttons: &GamepadButtons, small: &mut bool, big: &mut u8) {
-    if buttons.cross() {
-        *small = true;
-    } else {
-        *small = false;
-    }
+    *small = buttons.cross();
 
     if buttons.down() {
         *big = 255 / 3;
     } else if buttons.left() {
         *big = 255 / 2;
     } else if buttons.up() {
-        *big = 255 / 1;
+        *big = 255;
     } else {
         *big = 0;
     }
