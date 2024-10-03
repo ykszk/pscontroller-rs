@@ -7,9 +7,9 @@
 /// Buttons on the Guitar Hero guitar. Reference material:
 /// https://strategywiki.org/wiki/Guitar_Hero_II/Controls
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct GuitarButtons {
-    data: u16
+    data: u16,
 }
 
 impl GuitarButtons {
@@ -79,7 +79,7 @@ impl GuitarButtons {
 }
 
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Debug, Copy, Clone)]
 /// Represents a Guitar Hero controller
 pub struct GuitarHero {
     /// The buttons

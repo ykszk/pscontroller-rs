@@ -5,7 +5,7 @@
 
 /// The two buttons found on the baton
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct BatonButtons {
     data: u16
 }
@@ -26,7 +26,7 @@ impl BatonButtons {
 }
 
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Debug, Copy, Clone)]
 /// Represents the classic Controller
 pub struct Baton {
     /// Standard buttons
