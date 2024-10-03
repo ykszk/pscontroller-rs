@@ -9,10 +9,9 @@ extern crate embedded_hal;
 extern crate linux_embedded_hal as linux_hal;
 extern crate pscontroller_rs;
 
-use linux_hal::spidev::{SpidevOptions, SPI_MODE_3};
-use linux_hal::Pin;
-use linux_hal::Spidev;
-use std::io;
+use linux_hal::spidev::{SpiModeFlags, SpidevOptions};
+use linux_hal::CdevPin as Pin;
+use linux_hal::{SPIError, SpidevDevice as Spidev};
 
 use pscontroller_rs::{
     jogcon::{ControlJC, JogControl},
@@ -24,12 +23,12 @@ use pscontroller_rs::{
 const SPI_DEVICE: &str = "/dev/spidev0.0";
 const SPI_SPEED: u32 = 10_000;
 
-fn build_spi() -> io::Result<Spidev> {
+fn build_spi() -> Result<Spidev, SPIError> {
     let mut spi = Spidev::open(SPI_DEVICE)?;
     let opts = SpidevOptions::new()
         .bits_per_word(8)
         .max_speed_hz(SPI_SPEED)
-        .mode(SPI_MODE_3)
+        .mode(SpiModeFlags::SPI_MODE_3)
         .build();
     spi.configure(&opts)?;
 

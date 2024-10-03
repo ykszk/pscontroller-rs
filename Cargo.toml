@@ -1,6 +1,7 @@
 [package]
 name = "pscontroller-rs"
 version = "0.7.0"
+edition = "2021"
 authors = ["Edwin Amsler"]
 
 categories = ["embedded", "hardware-support", "no-std"]
@@ -9,15 +10,13 @@ keywords = ["embedded-hal-driver", "playstation", "gamepad"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/RandomInsano/pscontroller-rs"
 
-exclude = [
-    "research/*",
-]
+exclude = ["research/*"]
 
 [dependencies]
-embedded-hal = "=0.2.2"
+embedded-hal = "1.0.0"
 bit_reverse = { version = "0.1.7", default-features = false }
-bitflags = "1.0"
+bitflags = "2.6.0"
 byteorder = { version = "1.2", default-features = false }
 
 [dev-dependencies]
-linux-embedded-hal = "0.2.2"
+linux-embedded-hal = "0.4.0"

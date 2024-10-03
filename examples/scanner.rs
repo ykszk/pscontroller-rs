@@ -1,17 +1,13 @@
-extern crate linux_embedded_hal as linux_hal;
 extern crate embedded_hal;
+extern crate linux_embedded_hal as linux_hal;
 extern crate pscontroller_rs;
 
-use std::io;
+use linux_hal::spidev::{SpiModeFlags, SpidevOptions};
+use linux_hal::CdevPin as Pin;
+use linux_hal::{SPIError, SpidevDevice as Spidev};
 use std::{thread, time};
-use linux_hal::Spidev;
-use linux_hal::spidev::{SpidevOptions, SPI_MODE_3};
-use linux_hal::Pin;
 
-use pscontroller_rs::{
-    PlayStationPort,
-    MultitapPort
-};
+use pscontroller_rs::{MultitapPort, PlayStationPort};
 
 const CMD_ENTER_ESCAPE_MODE: &[u8] = &[0x00, 0x43, 0x00, 0x01, 0x00];
 const CMD_EXIT_ESCAPE_MODE: &[u8] = &[0x00, 0x43, 0x00, 0x00, 0x00];
@@ -19,9 +15,8 @@ const MULTITAP_LIST: [MultitapPort; 4] = [
     MultitapPort::A,
     MultitapPort::B,
     MultitapPort::C,
-    MultitapPort::D
+    MultitapPort::D,
 ];
-
 
 const SPI_DEVICE: &str = "/dev/spidev0.0";
 const SPI_SPEED: u32 = 50_000;
@@ -30,12 +25,12 @@ const SCAN_RESPONSE_WIDTH: u8 = 10;
 const SAMPLE_PAUSE: u64 = 0_000;
 const USE_MULTITAP: bool = false;
 
-fn build_spi() -> io::Result<Spidev> {
+fn build_spi() -> Result<Spidev, SPIError> {
     let mut spi = Spidev::open(SPI_DEVICE)?;
     let opts = SpidevOptions::new()
         .bits_per_word(8)
         .max_speed_hz(SPI_SPEED)
-        .mode(SPI_MODE_3)
+        .mode(SpiModeFlags::SPI_MODE_3)
         .build();
     spi.configure(&opts)?;
 
@@ -54,8 +49,11 @@ fn main() {
     psp.enable_pressure().unwrap();
 
     for i in MULTITAP_LIST.iter() {
-		println!("                                                  ");
-        println!("Scanning port address {0:02x}                     ", i.clone() as u8);
+        println!("                                                  ");
+        println!(
+            "Scanning port address {0:02x}                     ",
+            i.clone() as u8
+        );
         println!("==================================================");
 
         // I had trouble with both something called `type ascription` and conflicting
@@ -65,7 +63,7 @@ fn main() {
             return;
         }
 
-        for k in 0 .. 2 {
+        for k in 0..2 {
             let escape = k == 1;
 
             if escape {
@@ -74,12 +72,13 @@ fn main() {
                 println!("Regular Commands:                         ");
             }
 
-            for j in 0 ..= 0xff {
+            for j in 0..=0xff {
                 psp.set_multitap_port(i.clone());
                 command[1] = j;
 
                 if escape {
-                    psp.send_command(CMD_ENTER_ESCAPE_MODE, &mut _dummy).unwrap();
+                    psp.send_command(CMD_ENTER_ESCAPE_MODE, &mut _dummy)
+                        .unwrap();
                     thread::sleep(sleep_duration);
                 }
 
@@ -92,7 +91,7 @@ fn main() {
                 print!("Command {:02x}: ", j);
 
                 let mut found = false;
-                for k in 2 .. buffer.len() {
+                for k in 2..buffer.len() {
                     if buffer[k] != 0xff {
                         found = true;
                     }
