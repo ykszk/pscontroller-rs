@@ -503,15 +503,20 @@ mod tests {
     #[test]
     fn union_test() {
         // Again, buttons are active low, hence 'fe' and '7f'
-        let controller = ControllerData {
-            data: [0xfe, 0x7f, 0x00, 0x00, 0x00, 0xff],
-        };
+        let mut data = [0; super::MESSAGE_MAX_LENGTH];
+        data[0] = 0xfe;
+        data[1] = 0x7f;
+        data[2] = 0x00;
+        data[3] = 0x00;
+        data[4] = 0x00;
+        data[5] = 0xff;
+        let controller = super::ControllerData { data };
 
         unsafe {
-            assert!(controller.ds.buttons.select() == true);
-            assert!(controller.ds.buttons.square() == true);
-            assert!(controller.ds.lx == 0);
-            assert!(controller.ds.ly == 255);
+            assert!(controller.ds.buttons.select());
+            assert!(controller.ds.buttons.square());
+            assert_eq!(controller.ds.lx, 0);
+            assert_eq!(controller.ds.ly, 255);
         }
     }
 }
