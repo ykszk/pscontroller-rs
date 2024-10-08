@@ -66,7 +66,6 @@ extern crate embedded_hal as hal;
 
 use bit_reverse::ParallelReverse;
 use core::fmt;
-use hal::digital::OutputPin;
 use hal::spi;
 
 use baton::Baton;
@@ -280,28 +279,20 @@ pub enum Device {
 
 /// The main event! Create a port using an SPI bus and start commanding
 /// controllers!
-pub struct PlayStationPort<SPI, CS> {
+pub struct PlayStationPort<SPI> {
     dev: SPI,
-    select: Option<CS>,
     multitap_port: MultitapPort,
 }
 
-impl<SPI, CS> PlayStationPort<SPI, CS>
+impl<SPI> PlayStationPort<SPI>
 where
     SPI: spi::SpiDevice,
-    CS: OutputPin,
 {
     /// Create a new device to talk over the PlayStation's controller
     /// port
-    pub fn new(spi: SPI, mut select: Option<CS>) -> Self {
-        // If a select pin was provided, disable the controller for now
-        if let Some(ref mut x) = select {
-            x.set_high();
-        }
-
+    pub fn new(spi: SPI) -> Self {
         Self {
             dev: spi,
-            select,
             multitap_port: MultitapPort::A,
         }
     }
@@ -329,15 +320,7 @@ where
         // the bits ourselves
         Self::flip(result);
 
-        if let Some(ref mut x) = self.select {
-            x.set_low();
-        }
-
         self.dev.transfer_in_place(result)?;
-
-        if let Some(ref mut x) = self.select {
-            x.set_high();
-        }
 
         Self::flip(result);
 

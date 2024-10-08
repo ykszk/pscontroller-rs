@@ -35,7 +35,7 @@ fn dump_hex(buffer: &[u8]) {
 
 fn main() {
     let spi = build_spi().unwrap();
-    let mut psp = PlayStationPort::new(spi, None::<Pin>);
+    let mut psp = PlayStationPort::new(spi);
 
     psp.enable_pressure().unwrap();
 

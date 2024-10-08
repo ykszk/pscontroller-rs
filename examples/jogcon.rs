@@ -37,7 +37,7 @@ fn build_spi() -> Result<Spidev, SPIError> {
 
 fn main() {
     let spi = build_spi().unwrap();
-    let mut psp = PlayStationPort::new(spi, None::<Pin>);
+    let mut psp = PlayStationPort::new(spi);
     let mut control_jc = ControlJC::new(JogControl::Stop, 15);
 
     psp.enable_jogcon()

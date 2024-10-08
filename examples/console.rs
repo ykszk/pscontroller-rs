@@ -33,7 +33,7 @@ fn main() {
     let spi = build_spi().unwrap();
     //let enable_pin = Pin::new(SPI_ENABLE_PIN);
     //let mut psp = PlayStationPort::new(spi, Some(enable_pin));
-    let mut psp = PlayStationPort::new(spi, None::<Pin>);
+    let mut psp = PlayStationPort::new(spi);
     let mut command = [0u8; 32];
     let mut buffer = [0u8; 32];
 

@@ -29,7 +29,7 @@ fn build_spi() -> Result<Spidev, SPIError> {
 
 fn main() {
     let spi = build_spi().unwrap();
-    let mut psp = PlayStationPort::new(spi, None::<Pin>);
+    let mut psp = PlayStationPort::new(spi);
     let sleep_duration = time::Duration::from_millis(10);
 
     let mut x: i32 = 0;

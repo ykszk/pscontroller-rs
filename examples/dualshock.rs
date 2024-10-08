@@ -42,7 +42,7 @@ fn set_motors(buttons: &GamepadButtons, small: &mut bool, big: &mut u8) {
 
 fn main() {
     let spi = build_spi().unwrap();
-    let mut psp = PlayStationPort::new(spi, None::<Pin>);
+    let mut psp = PlayStationPort::new(spi);
     let mut control_ds = ControlDS::new(false, 0);
 
     let mut big: u8 = 0;

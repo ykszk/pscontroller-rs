@@ -39,7 +39,7 @@ fn build_spi() -> Result<Spidev, SPIError> {
 
 fn main() {
     let spi = build_spi().unwrap();
-    let mut psp = PlayStationPort::new(spi, None::<Pin>);
+    let mut psp = PlayStationPort::new(spi);
     let mut command = [0u8; SCAN_RESPONSE_WIDTH as usize];
     let mut buffer = [0u8; SCAN_RESPONSE_WIDTH as usize];
     let mut _dummy = [0u8; SCAN_RESPONSE_WIDTH as usize];
