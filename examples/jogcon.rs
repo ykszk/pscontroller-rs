@@ -10,12 +10,11 @@ extern crate linux_embedded_hal as linux_hal;
 extern crate pscontroller_rs;
 
 use linux_hal::spidev::{SpiModeFlags, SpidevOptions};
-use linux_hal::CdevPin as Pin;
 use linux_hal::{SPIError, SpidevDevice as Spidev};
 
 use pscontroller_rs::{
     jogcon::{ControlJC, JogControl},
-    Device, PlayStationPort,
+    Buttons, Device, PlayStationPort,
 };
 
 // Specific to the host device used on Linux, you'll have to change the following

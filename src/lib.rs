@@ -70,8 +70,9 @@ use core::fmt;
 use hal::spi;
 
 use baton::Baton;
+pub use buttons::Buttons;
 use classic::Classic;
-use dualshock::{DualShock, DualShock2, AnalogJoystick};
+use dualshock::{AnalogJoystick, DualShock, DualShock2};
 use guitarhero::GuitarHero;
 use guncon::GunCon;
 use jogcon::JogCon;
@@ -490,6 +491,7 @@ mod tests {
         data[4] = 0x00;
         data[5] = 0xff;
         let controller = super::ControllerData { data };
+        use super::Buttons;
 
         unsafe {
             assert!(controller.ds.buttons.select());

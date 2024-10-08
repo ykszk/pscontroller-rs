@@ -3,10 +3,11 @@ extern crate linux_embedded_hal as linux_hal;
 extern crate pscontroller_rs;
 
 use linux_hal::spidev::{SpiModeFlags, SpidevOptions};
-use linux_hal::CdevPin as Pin;
 use linux_hal::{SPIError, SpidevDevice as Spidev};
 
-use pscontroller_rs::{classic::GamepadButtons, dualshock::ControlDS, Device, PlayStationPort};
+use pscontroller_rs::{
+    buttons::GamepadButtons, dualshock::ControlDS, Buttons, Device, PlayStationPort,
+};
 
 // Specific to the host device used on Linux, you'll have to change the following
 // parameters depending on your board and also export and allow writing to the GPIO
@@ -63,7 +64,7 @@ fn main() {
         };
 
         match controller {
-            Device::DualShock(x) | Device::AnalogJoystick(x) => {
+            Device::DualShock(x) => {
                 println!(
                     "DualShock:   Start? {0} - R:{1:02x},{2:02x}, L:{3:02x},{4:02x}",
                     x.buttons.start(),
