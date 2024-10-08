@@ -6,8 +6,32 @@
 //! This also maps for the the Dual Analog (precursor to the Dual Shock) and
 //! the Analog controller (flight stick) as they both have the same buttons
 
-use super::{HasStandardButtons, PollCommand};
-use crate::classic::GamepadButtons;
+use super::PollCommand;
+use crate::buttons::{GamepadButtons, AnalogJoystickButtons, HasStandardButtons};
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+/// Represents the analog joystick
+pub struct AnalogJoystick {
+    /// Standard buttons (Cross, Circle, L3, Start, etc)
+    pub buttons: AnalogJoystickButtons,
+
+    /// Right analog stick, left and right
+    pub rx: u8,
+    /// Right analog stick, up and down
+    pub ry: u8,
+    /// Left analog stick, left and right
+    pub lx: u8,
+    /// Left analog stick, up and down
+    pub ly: u8,
+}
+
+// TODO: Is analog joystick standard?
+// impl HasStandardButtons for AnalogJoystick {
+//     fn buttons(&self) -> GamepadButtons {
+//         self.buttons
+//     }
+// }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

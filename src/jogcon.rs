@@ -5,8 +5,8 @@
 //! but it is featureful enough that it can be treated as a servo motor with
 //! little effort.
 
-use super::{HasStandardButtons, PollCommand};
-use crate::classic::GamepadButtons;
+use super::PollCommand;
+use crate::buttons::{GamepadButtons, HasStandardButtons};
 use byteorder::{ByteOrder, LittleEndian};
 
 /// What we want the JogCon's wheel to do after we

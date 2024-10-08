@@ -51,6 +51,7 @@
 #![deny(missing_docs)]
 
 pub mod baton;
+pub mod buttons;
 pub mod classic;
 pub mod dualshock;
 pub mod guitarhero;
@@ -69,8 +70,8 @@ use core::fmt;
 use hal::spi;
 
 use baton::Baton;
-use classic::{Classic, GamepadButtons};
-use dualshock::{DualShock, DualShock2};
+use classic::Classic;
+use dualshock::{DualShock, DualShock2, AnalogJoystick};
 use guitarhero::GuitarHero;
 use guncon::GunCon;
 use jogcon::JogCon;
@@ -90,7 +91,7 @@ const CONTROLLER_NOT_PRESENT: u8 = 0xff;
 const CONTROLLER_MOUSE: u8 = 0x12;
 /// Original controller, SCPH-1080
 const CONTROLLER_CLASSIC: u8 = 0xc1;
-/// Analog Controller, SCPH-1110 (flightstick looking thing)
+/// Analog Joystick (SCPH-1110) or Dual Analog Controller in green mode (SCPH-1150/SCPH-1180)
 const CONTROLLER_ANALOG_JOYSTICK: u8 = 0x53;
 /// DualShock in Digital mode
 const CONTROLLER_DUALSHOCK_DIGITAL: u8 = 0x41;
@@ -150,6 +151,7 @@ pub union ControllerData {
     pub b: Baton,
     pm: Mouse,
     classic: Classic,
+    analog: AnalogJoystick,
     ds: DualShock,
     ds2: DualShock2,
     jc: JogCon,
@@ -205,16 +207,6 @@ pub trait PollCommand {
     fn set_command(&self, _: &mut [u8]);
 }
 
-/// Many controllers have the same set of buttons (Square, Circle, L3, R1, etc).
-/// The devices that do have these buttons implement this trait. Depite the original
-/// Controller not having L3 and R3, they are brought out regardless and just considered
-/// unpressable.
-pub trait HasStandardButtons {
-    /// This does require a clone operation of the bytes inside the controller.
-    /// To save yourself the copy, you can access the button data directly via `buttons`
-    fn buttons(&self) -> GamepadButtons;
-}
-
 /// Holds information about the controller's configuration and constants
 #[derive(Default)]
 pub struct ControllerConfiguration {
@@ -258,7 +250,7 @@ pub enum Device {
     /// Sony's strange flight-stick looking thing. Maps to the same data as the
     /// DualShock 1 but has a different identifier (fun fact: it predates the
     /// DualShock)
-    AnalogJoystick(DualShock),
+    AnalogJoystick(AnalogJoystick),
     /// Controller with two analog sticks. This was the final controller style shipped with
     /// the original PlayStation
     DualShock(DualShock),
@@ -471,7 +463,7 @@ where
                 CONTROLLER_CONFIGURATION => Device::ConfigurationMode,
                 CONTROLLER_MOUSE => Device::Mouse(controller.pm),
                 CONTROLLER_CLASSIC => Device::Classic(controller.classic),
-                CONTROLLER_ANALOG_JOYSTICK => Device::AnalogJoystick(controller.ds),
+                CONTROLLER_ANALOG_JOYSTICK => Device::AnalogJoystick(controller.analog),
                 CONTROLLER_DUALSHOCK_DIGITAL => Device::Classic(controller.classic),
                 CONTROLLER_DUALSHOCK_ANALOG => Device::DualShock(controller.ds),
                 CONTROLLER_DUALSHOCK_PRESSURE => Device::DualShock2(controller.ds2),
