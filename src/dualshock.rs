@@ -7,10 +7,10 @@
 //! the Analog controller (flight stick) as they both have the same buttons
 
 use super::PollCommand;
-use crate::buttons::{GamepadButtons, AnalogJoystickButtons, HasStandardButtons};
+use crate::buttons::{AnalogJoystickButtons, GamepadButtons, HasStandardButtons};
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// Represents the analog joystick
 pub struct AnalogJoystick {
     /// Standard buttons (Cross, Circle, L3, Start, etc)
@@ -34,7 +34,7 @@ pub struct AnalogJoystick {
 // }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// Represents the DualShock 1 controller
 pub struct DualShock {
     /// Standard buttons (Cross, Circle, L3, Start, etc)
@@ -57,7 +57,7 @@ impl HasStandardButtons for DualShock {
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// Represents the DualShock 2 controller
 pub struct DualShock2 {
     /// Standard buttons (Cross, Circle, L3, Start, etc)
@@ -85,6 +85,7 @@ impl HasStandardButtons for DualShock2 {
 
 /// Command for controlling the vibration motors in the
 /// dual shock controllers
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct ControlDS {
     /// Whether to turn on the small motor
     pub little: bool,

@@ -12,7 +12,7 @@
 
 /// The digital buttons of the Namco NegCon
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct NegconButtons {
     data: u16,
 }
@@ -85,7 +85,7 @@ impl NegconButtons {
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// Represents the Namco NegCon controller
 pub struct NegCon {
     /// The NegCon's weird buttons (A, B, R, etc)

@@ -10,7 +10,6 @@ pub trait HasStandardButtons {
     fn buttons(&self) -> GamepadButtons;
 }
 
-
 /// A collection of helper functions to take the button bitfield and make them more
 /// ergonomic to use.
 pub trait Buttons {
@@ -138,7 +137,7 @@ pub trait Buttons {
 
 /// The digital buttons of the gamepad
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct GamepadButtons {
     data: u16,
 }
@@ -169,7 +168,7 @@ impl Buttons for GamepadButtons {
 
 /// The digital buttons of the analog joystick (SCPH-1110) or analog controller (SCPH-1150) in green mode
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct AnalogJoystickButtons {
     data: u16,
 }

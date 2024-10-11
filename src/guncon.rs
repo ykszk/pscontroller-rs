@@ -2,17 +2,14 @@
 //! ============================
 //! A light gun for games like Time Crisis
 
-use byteorder::{
-    ByteOrder,
-    LittleEndian
-};
+use byteorder::{ByteOrder, LittleEndian};
 
 /// The buttons found on the generation 1 GunCon. Once I find a GC2
 /// I'll fill this out better
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct GunconButtons {
-    data: u16
+    data: u16,
 }
 
 impl GunconButtons {
@@ -37,7 +34,7 @@ impl GunconButtons {
 }
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// Represents the classic Controller
 pub struct GunCon {
     /// Standard buttons (Cross, Circle, L3, Start)

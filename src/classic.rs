@@ -3,10 +3,10 @@
 //! This is the predecessor of the DualShock and is the controller
 //! which originally shipped with the original PlayStation
 
-use crate::buttons::{HasStandardButtons, GamepadButtons};
+use crate::buttons::{GamepadButtons, HasStandardButtons};
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// Represents the classic Controller
 pub struct Classic {
     /// Standard buttons (Cross, Circle, L3, Start)
